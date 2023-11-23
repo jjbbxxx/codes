@@ -1,0 +1,2 @@
+
+        sum+=grade[n][i];
