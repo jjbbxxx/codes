@@ -7,6 +7,7 @@ public class ClearDirectory {
         String directoryPath = "C:\\Users\\asus\\Downloads\\TSDownload\\cache";
         File directory = new File(directoryPath);
 
+
         try {
             deleteDirectoryContents(directory);
             System.out.println("Directory has been cleared.");

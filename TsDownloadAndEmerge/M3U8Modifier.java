@@ -1,29 +1,34 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class M3U8Modifier {
 
     public static void main(String[] args) {
-        String filePath = "path/to/your/index.m3u8"; // 指定M3U8文件路径
+        String filePath = "C:\\Users\\asus\\Downloads\\TSDownload\\cache\\index.m3u8"; // 指定M3U8文件路径
 
         modifyM3U8File(filePath);
     }
 
     private static void modifyM3U8File(String filePath) {
         StringBuilder contentBuilder = new StringBuilder();
+        boolean modified = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
+            int lineNumber = 0;
+
             while ((line = br.readLine()) != null) {
-                if (line.contains("URI=\"./enc.key\"")) {
+                lineNumber++;
+                if (lineNumber == 5 && line.contains("URI=\"./enc.key\"")) {
                     line = line.replace("URI=\"./enc.key\"", "URI=\"enc.key\"");
+                    modified = true;
                 }
                 contentBuilder.append(line).append(System.lineSeparator());
             }
-            writeToFile(filePath, contentBuilder.toString());
+
+            // 如果进行了修改，则重写文件
+            if (modified) {
+                writeToFile(filePath, contentBuilder.toString());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
