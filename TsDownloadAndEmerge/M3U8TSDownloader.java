@@ -16,7 +16,8 @@ public class M3U8TSDownloader {
     }
 
     public static void down(String m3u8URL,int method) {
-        if (method ==0) {
+        int x;
+        if (method == 0) {
             String m3u8FilePath = "C:\\Users\\asus\\Downloads\\TSDownload\\cache\\index.m3u8"; // 您的M3U8本地文件路径
             String baseURL = m3u8URL.substring(0, m3u8URL.lastIndexOf('/') + 1);
 
@@ -38,28 +39,29 @@ public class M3U8TSDownloader {
             } catch (IOException e) {
                 System.out.println("Error reading M3U8 file: " + e.getMessage());
             }
-        }
-        else if(method==1){
+        } else if (method == 1) {
             String baseURL = m3u8URL.substring(0, m3u8URL.lastIndexOf('/') + 1);
-                String line;
-                int x=1;
-                while(true) {
-                    String s = String.format("%03d", x);
-                    line = "index"+ s +".ts";
-                        String fileURL = baseURL + line ;
-                        String savePath = "C:\\Users\\asus\\Downloads\\TSDownload\\cache\\" + line;
+            String line;
+            x = 1;
+            while (true) {
+                String s = String.format("%03d", x);
+                line = "index" + s + ".ts";
+                String fileURL = baseURL + line;
+                String savePath = "C:\\Users\\asus\\Downloads\\TSDownload\\cache\\" + line;
 
-                        try {
-                            downloadTSFile(fileURL, savePath);
-                            System.out.println(line + " downloaded successfully.");
-                        } catch (IOException e) {
-                            System.out.println("End downloading");
-                            return;
-                        }
-                        x++;
-                    }
+                try {
+                    downloadTSFile(fileURL, savePath);
+                    System.out.println(line + " downloaded successfully.");
+                    x++;
+                } catch (IOException e) {
+                    System.out.println("End downloading");
+                    break;
                 }
             }
+            M3U8Generator.complete(x);
+        }
+
+    }
 
 
 
