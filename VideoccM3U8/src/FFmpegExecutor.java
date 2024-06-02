@@ -7,7 +7,7 @@ import java.util.List;
 public class FFmpegExecutor {
 
     private static final String FFMPEG_PATH = "E:/jbx/Code/TsDownloadAndEmerge/ffmpeg.exe";
-    private static final String OUTPUT_DIRECTORY = "E:/研途/数据结构";
+    private static final String OUTPUT_DIRECTORY = "E:/研途/政治/马原";
     private static final String CACHE_DIRECTORY = OUTPUT_DIRECTORY + "/cache";
     private static final String MODIFIED_M3U8_FILE = CACHE_DIRECTORY + "/modified.m3u8";
     private static final String FILENAMES_LIST_PATH = CACHE_DIRECTORY + "/filenames.txt";

@@ -3,12 +3,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static final String OUTPUT_DIRECTORY = "E:/研途/数据结构";
+    public static final String OUTPUT_DIRECTORY = "E:/研途/政治/马原";
     public static final String CACHE_DIRECTORY = OUTPUT_DIRECTORY + "/cache";
     public static final String DOWNLOADED_M3U8_FILE = CACHE_DIRECTORY + "/downloaded.m3u8";
     public static final String MODIFIED_M3U8_FILE = CACHE_DIRECTORY + "/modified.m3u8";
     public static final String DOWNLOADED_KEY_FILE = CACHE_DIRECTORY + "/downloaded.key";
     public static final String SEGMENTS_DIRECTORY = CACHE_DIRECTORY;
+    public static final String FILENAMES_LIST_PATH = OUTPUT_DIRECTORY + "/filenames.txt";
 
     public static void main(String[] args) {
         // 创建必要的目录

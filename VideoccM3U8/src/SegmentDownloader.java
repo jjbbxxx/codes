@@ -1,6 +1,6 @@
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 public class SegmentDownloader {
 
     public static void downloadSegments(String m3u8FilePath, String outputDirectory) throws IOException, InterruptedException {
+        // 设置系统属性以使用系统代理配置
+        System.setProperty("java.net.useSystemProxies", "true");
+
         File inputFile = new File(m3u8FilePath);
         createDirectoryIfNotExists(outputDirectory);
         File outputDir = new File(outputDirectory);
@@ -46,11 +49,14 @@ public class SegmentDownloader {
     }
 
     private static void downloadSegment(String segmentUrl, String outputFilePath) throws IOException {
-        createDirectoryIfNotExists(outputFilePath);
         URL url = new URL(segmentUrl);
-        try (BufferedInputStream in = new BufferedInputStream(url.openStream());
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setConnectTimeout(10000);
+        connection.setReadTimeout(10000);
+
+        try (BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
              FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath)) {
-            byte[] dataBuffer = new byte[1024];
+            byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
