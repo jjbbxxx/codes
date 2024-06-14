@@ -21,7 +21,7 @@ public class ReechoApi {
                 "    \"promptId\": \"default\",\n" +
                 "    \"model\": \"reecho-neural-voice-001\",\n" +
                 "    \"randomness\": 90,\n" +
-                "    \"stability_boost\": 150,\n" +
+                "    \"stability_boost\": 100,\n" +
                 "    \"probability_optimization\": 95,\n" +
                 "    \"origin_audio\": false,\n" +
                 "    \"stream\": false\n" +
