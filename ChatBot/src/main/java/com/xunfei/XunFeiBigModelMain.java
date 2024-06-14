@@ -87,20 +87,19 @@ public class XunFeiBigModelMain {
     public static void main(String[] args) throws MalformedURLException, URISyntaxException {
         DisableWarning.disableAccessWarnings();
         System.out.println("你好，我是大黄蜂，请问有什么可以帮您的吗？");
-        historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。所有回答控制在七句话以内。"));
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
-            String content = scanner.nextLine();
-            // 如果键入“结束对话”，则跳出循环，终止程序
-            if (content.contains("结束对话") || content.contains("再见")) {
-                System.out.println("好的，再见！");
-                break;
-            }
-            System.out.println("我:" + content);
-            websocketClient(getAuthUrl(), createReqParams(content));
-        }
+        historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。你的回答要体现出你是大黄蜂。"));
     }
 
+    /**
+     * 处理用户输入
+     *
+     * @param content 用户输入内容
+     */
+    public static void handleUserInput(String content) throws MalformedURLException, URISyntaxException {
+        historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。你的回答要体现出你是大黄蜂。"));
+        System.out.println("我:" + content+"请你的回答控制在80字以内。");
+        websocketClient(getAuthUrl(), createReqParams(content));
+    }
 
     /**
      * websocket 连接
@@ -124,6 +123,7 @@ public class XunFeiBigModelMain {
                 // 错误码，0表示正常
                 final int successCode = 0;
                 // 会话状态，2代表最后一个结果
+
                 final int lastStatus = 2;
 
                 Result result = JSONObject.parseObject(s, Result.class);
@@ -166,7 +166,7 @@ public class XunFeiBigModelMain {
 
         Chat chat = new Chat();
         chat.setDomain(DOMAIN_2);
-        chat.setMaxTokens(100);
+        chat.setMaxTokens(1000);
         Parameter parameter = new Parameter();
         parameter.setChat(chat);
 
@@ -210,7 +210,6 @@ public class XunFeiBigModelMain {
         request.setPayload(payload);
         return JSONObject.toJSONString(request);
     }
-
 
     /**
      * URL鉴权
