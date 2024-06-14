@@ -27,12 +27,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 /**
  * 讯飞大模型测试类
  *
- * @author Linzj
  * @date 2023/10/19/019 16:25
  */
 public class XunFeiBigModelMain {
@@ -84,10 +84,19 @@ public class XunFeiBigModelMain {
      */
     public static List<RoleContent> historyList = new LinkedList<>();
 
+    /**
+     * 初始化方法，在对话历史中添加系统提示
+     */
+    private static void initializeHistory() {
+        if (historyList.isEmpty()) {
+            historyList.add(new RoleContent("system", "你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。你的回答要体现出你是大黄蜂。"));
+        }
+    }
+
     public static void main(String[] args) throws MalformedURLException, URISyntaxException {
         DisableWarning.disableAccessWarnings();
         System.out.println("你好，我是大黄蜂，请问有什么可以帮您的吗？");
-        historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。你的回答要体现出你是大黄蜂。"));
+        initializeHistory();
     }
 
     /**
@@ -95,10 +104,26 @@ public class XunFeiBigModelMain {
      *
      * @param content 用户输入内容
      */
-    public static void handleUserInput(String content) throws MalformedURLException, URISyntaxException {
-        historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。你的回答要体现出你是大黄蜂。"));
-        System.out.println("我:" + content+"请你的回答控制在80字以内。");
-        websocketClient(getAuthUrl(), createReqParams(content));
+    public static void handleUserInput(String content, CountDownLatch latch) throws MalformedURLException, URISyntaxException {
+        initializeHistory();
+        System.out.println("我:" + content);
+        websocketClient(getAuthUrl(), createReqParams(content+"请你在五句话以内回答。"), latch);
+    }
+
+    /**
+     * 获取最后一次响应的内容
+     *
+     * @return 最后一次响应的内容
+     */
+    public static String getLastResponse() {
+        if (!RESULT_LINKED_LIST.isEmpty()) {
+            return RESULT_LINKED_LIST.stream()
+                    .map(item -> item.getPayload().getChoices().getText())
+                    .flatMap(Collection::stream)
+                    .map(Text::getContent)
+                    .collect(Collectors.joining());
+        }
+        return "";
     }
 
     /**
@@ -106,9 +131,10 @@ public class XunFeiBigModelMain {
      *
      * @param authUrl   鉴权地址
      * @param reqParams 请求参数
+     * @param latch     用于同步的 CountDownLatch
      * @throws URISyntaxException 异常
      */
-    private static void websocketClient(String authUrl, String reqParams) throws URISyntaxException {
+    private static void websocketClient(String authUrl, String reqParams, CountDownLatch latch) throws URISyntaxException {
         String url = authUrl.replace("http://", "ws://").replace("https://", "wss://");
         URI uri = new URI(url);
         WebSocketClient webSocketClient = new WebSocketClient(uri) {
@@ -137,6 +163,7 @@ public class XunFeiBigModelMain {
                 // 如果是最后的结果，整合答复数据打印出来
                 if (Objects.equals(lastStatus, header.getStatus())) {
                     printReply();
+                    latch.countDown();
                 }
             }
 
@@ -166,7 +193,7 @@ public class XunFeiBigModelMain {
 
         Chat chat = new Chat();
         chat.setDomain(DOMAIN_2);
-        chat.setMaxTokens(1000);
+        chat.setMaxTokens(100);
         Parameter parameter = new Parameter();
         parameter.setChat(chat);
 
@@ -269,6 +296,6 @@ public class XunFeiBigModelMain {
         roleContent.setRole(ROLE_ASSISTANT);
         roleContent.setContent(content);
         historyList.add(roleContent);
-        System.out.println("星火认知大模型：" + content);
+        System.out.println("大黄蜂：" + content);
     }
 }
