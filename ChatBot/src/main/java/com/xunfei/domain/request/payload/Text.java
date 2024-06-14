@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.request.payload;
+package com.xunfei.domain.request.payload;
 
 /**
  * text 部分

@@ -43,7 +43,7 @@ public class SpeechToText {
         if (res.has("result")) {
             return res.getJSONArray("result").getString(0);
         } else {
-            return "未识别到语音内容: " + res.toString();
+            return "未识别到语音内容: " + res;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain;
+package com.xunfei.domain;
 
 /**
  * 对话记录

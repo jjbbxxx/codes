@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.request.parameter;
+package com.xunfei.domain.request.parameter;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonInclude;

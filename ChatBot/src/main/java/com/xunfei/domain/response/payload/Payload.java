@@ -1,9 +1,9 @@
 /**
  * Copyright 2023 bejson.com
  */
-package com.xunFeiAI.domain.response.payload;
+package com.xunfei.domain.response.payload;
 
-import com.xunFeiAI.domain.response.usage.Usage;
+import com.xunfei.domain.response.usage.Usage;
 
 import java.util.StringJoiner;
 

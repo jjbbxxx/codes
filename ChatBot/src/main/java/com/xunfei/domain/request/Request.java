@@ -1,9 +1,9 @@
-package com.xunFeiAI.domain.request;
+package com.xunfei.domain.request;
 
 
-import com.xunFeiAI.domain.request.header.Header;
-import com.xunFeiAI.domain.request.parameter.Parameter;
-import com.xunFeiAI.domain.request.payload.Payload;
+import com.xunfei.domain.request.header.Header;
+import com.xunfei.domain.request.parameter.Parameter;
+import com.xunfei.domain.request.payload.Payload;
 
 /**
  * 大模型请求实体

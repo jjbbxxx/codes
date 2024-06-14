@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.response.header;
+package com.xunfei.domain.response.header;
 
 import java.util.StringJoiner;
 

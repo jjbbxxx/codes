@@ -1,4 +1,4 @@
-package com.xunFeiAI;
+package com.xunfei;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.date.DatePattern;
@@ -6,15 +6,15 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.HMac;
 import com.alibaba.fastjson.JSONObject;
-import com.xunFeiAI.domain.RoleContent;
-import com.xunFeiAI.domain.request.Request;
-import com.xunFeiAI.domain.request.header.Header;
-import com.xunFeiAI.domain.request.parameter.Chat;
-import com.xunFeiAI.domain.request.parameter.Parameter;
-import com.xunFeiAI.domain.request.payload.Message;
-import com.xunFeiAI.domain.request.payload.Payload;
-import com.xunFeiAI.domain.response.Result;
-import com.xunFeiAI.domain.response.payload.Text;
+import com.xunfei.domain.RoleContent;
+import com.xunfei.domain.request.Request;
+import com.xunfei.domain.request.header.Header;
+import com.xunfei.domain.request.parameter.Chat;
+import com.xunfei.domain.request.parameter.Parameter;
+import com.xunfei.domain.request.payload.Message;
+import com.xunfei.domain.request.payload.Payload;
+import com.xunfei.domain.response.Result;
+import com.xunfei.domain.response.payload.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -85,6 +85,7 @@ public class XunFeiBigModelMain {
     public static List<RoleContent> historyList = new LinkedList<>();
 
     public static void main(String[] args) throws MalformedURLException, URISyntaxException {
+        DisableWarning.disableAccessWarnings();
         System.out.println("你好，我是大黄蜂，请问有什么可以帮您的吗？");
         historyList.add(new RoleContent("system","你是变形金刚中的大黄蜂，你负责在休闲园区与游客对话。记住，你就是大黄蜂本人。所有回答控制在七句话以内。"));
         while (true) {
@@ -126,7 +127,7 @@ public class XunFeiBigModelMain {
                 final int lastStatus = 2;
 
                 Result result = JSONObject.parseObject(s, Result.class);
-                com.xunFeiAI.domain.response.header.Header header = result.getHeader();
+                com.xunfei.domain.response.header.Header header = result.getHeader();
                 if (Objects.equals(successCode, header.getCode())) {
                     RESULT_LINKED_LIST.add(result);
                 } else {
@@ -171,7 +172,7 @@ public class XunFeiBigModelMain {
 
         Message message = new Message();
         if (historyList.isEmpty()) {
-            com.xunFeiAI.domain.request.payload.Text text = new com.xunFeiAI.domain.request.payload.Text();
+            com.xunfei.domain.request.payload.Text text = new com.xunfei.domain.request.payload.Text();
             text.setRole(ROLE_USER);
             text.setContent(content);
             message.setText(Collections.singletonList(text));
@@ -189,9 +190,9 @@ public class XunFeiBigModelMain {
             historyList.add(roleContent);
             delHistory();
 
-            List<com.xunFeiAI.domain.request.payload.Text> textList = historyList.stream()
+            List<com.xunfei.domain.request.payload.Text> textList = historyList.stream()
                     .map(item -> {
-                        com.xunFeiAI.domain.request.payload.Text text = new com.xunFeiAI.domain.request.payload.Text();
+                        com.xunfei.domain.request.payload.Text text = new com.xunfei.domain.request.payload.Text();
                         text.setContent(item.getContent());
                         text.setRole(item.getRole());
                         return text;

@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.response.payload;
+package com.xunfei.domain.response.payload;
 
 import java.util.List;
 import java.util.StringJoiner;

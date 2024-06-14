@@ -1,7 +1,7 @@
-package com.xunFeiAI.domain.response;
+package com.xunfei.domain.response;
 
-import com.xunFeiAI.domain.response.header.Header;
-import com.xunFeiAI.domain.response.payload.Payload;
+import com.xunfei.domain.response.header.Header;
+import com.xunfei.domain.response.payload.Payload;
 
 import java.util.StringJoiner;
 

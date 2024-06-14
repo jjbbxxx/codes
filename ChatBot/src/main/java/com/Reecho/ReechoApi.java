@@ -9,7 +9,7 @@ public class ReechoApi {
     private static final String API_URL = "https://v1.reecho.cn/api/tts/simple-generate";
     private static final String TOKEN = "sk-2fbd63e62e18a4fff9b1532d5f0e0155"; // 替换为实际的Token
 
-    public static JSONObject sendRequest() {
+    public static String sendRequest() {
         OkHttpClient client =  new OkHttpClient().newBuilder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
@@ -40,11 +40,7 @@ public class ReechoApi {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                String responseBody = null;
-                if (response.body() != null) {
-                    responseBody = response.body().string();
-                }
-                return new JSONObject(responseBody);
+                return response.body() != null ? response.body().string() : null;
             } else {
                 System.err.println("Request failed: " + response.code());
             }
@@ -56,9 +52,9 @@ public class ReechoApi {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        JSONObject response = sendRequest();
+        String response = sendRequest();
         if (response != null) {
-            ResponseAnalyzer.analyzeResponse(String.valueOf(response), startTime);
+            ResponseAnalyzer.analyzeResponse(response, startTime);
         }
     }
 }

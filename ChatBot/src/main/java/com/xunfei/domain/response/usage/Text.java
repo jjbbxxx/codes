@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.response.usage;
+package com.xunfei.domain.response.usage;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

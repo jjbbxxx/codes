@@ -1,4 +1,4 @@
-package com.xunFeiAI.domain.request.parameter;
+package com.xunfei.domain.request.parameter;
 
 /**
  * parameter 部分
