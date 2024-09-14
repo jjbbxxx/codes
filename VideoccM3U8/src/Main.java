@@ -1,26 +1,29 @@
 import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class Main {
-    public static final String OUTPUT_DIRECTORY = "E:/研途/专业课/数据结构";
+    // 统一的输出目录，只需在此修改输出路径
+    public static final String OUTPUT_DIRECTORY = "/path/to/output"; // 用户只需修改这行
     public static final String CACHE_DIRECTORY = OUTPUT_DIRECTORY + "/cache";
     public static final String DOWNLOADED_M3U8_FILE = CACHE_DIRECTORY + "/downloaded.m3u8";
     public static final String MODIFIED_M3U8_FILE = CACHE_DIRECTORY + "/modified.m3u8";
     public static final String DOWNLOADED_KEY_FILE = CACHE_DIRECTORY + "/downloaded.key";
     public static final String SEGMENTS_DIRECTORY = CACHE_DIRECTORY;
     public static final String FILENAMES_LIST_PATH = OUTPUT_DIRECTORY + "/filenames.txt";
+    public static final String URLS_FILE_PATH = CACHE_DIRECTORY + "/urls.txt"; // 新增urls.txt路径
 
     public static void main(String[] args) {
         // 创建必要的目录
-        createDirectory(CACHE_DIRECTORY);
+        createDirectory();
 
         // 清理上次下载和修改的文件
         CleanupManager.cleanUp(CACHE_DIRECTORY);
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the URL of the m3u8 file: ");
-        String m3u8Url = scanner.nextLine();
+        // 获取输入的 URL 并处理
+        String m3u8Url = args.length > 0 ? args[0] : null;
+        if (m3u8Url == null) {
+            System.err.println("URL not provided.");
+            return;
+        }
 
         try {
             System.out.println("Downloading m3u8 file...");
@@ -42,20 +45,20 @@ public class Main {
             // 调用 FFmpegExecutor
             System.out.println("Starting FFmpeg execution...");
             FFmpegExecutor.main(null);
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
-            // 终止程序执行
             System.exit(1);
         }
     }
 
-    private static void createDirectory(String directoryPath) {
-        File directory = new File(directoryPath);
+    // 创建目录
+    private static void createDirectory() {
+        File directory = new File(Main.CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (directory.mkdirs()) {
-                System.out.println("Created directory: " + directoryPath);
+                System.out.println("Created directory: " + Main.CACHE_DIRECTORY);
             } else {
-                System.err.println("Failed to create directory: " + directoryPath);
+                System.err.println("Failed to create directory: " + Main.CACHE_DIRECTORY);
             }
         }
     }
