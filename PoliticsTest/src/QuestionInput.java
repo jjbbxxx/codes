@@ -78,8 +78,14 @@ public class QuestionInput {
         }
 
         while (true) {
-            System.out.print("请输入题目词：");
+            System.out.print("请输入题目词（输入“q”返回主菜单）：");
             String questionTerm = scanner.nextLine().trim();
+
+            // 检查是否输入了 "q" 以退出到主菜单
+            if (questionTerm.equalsIgnoreCase("q")) {
+                System.out.println("返回主菜单...");
+                break;
+            }
 
             System.out.print("请输入答案：");
             String answer = scanner.nextLine().trim();
@@ -91,12 +97,6 @@ public class QuestionInput {
             questions.get(storedTheme).add(entry);
 
             System.out.println("表述已添加：" + entry);
-
-            System.out.print("回车继续在当前主题 \"" + theme + "\" 下录入，输入“q”更换主题：");
-            String input = scanner.nextLine().trim();
-            if (input.equals("q")) {
-                break;
-            }
         }
     }
 
